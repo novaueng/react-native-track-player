@@ -65,6 +65,8 @@ class MusicService : HeadlessJsTaskService() {
 
     @MainThread
     fun setupPlayer(playerOptions: Bundle?) {
+        val playerConfig = PlayerConfig()
+
         val bufferOptions = BufferConfig(
                 playerOptions?.getDouble(MIN_BUFFER_KEY)?.toMilliseconds()?.toInt(),
                 playerOptions?.getDouble(MAX_BUFFER_KEY)?.toMilliseconds()?.toInt(),
@@ -78,7 +80,7 @@ class MusicService : HeadlessJsTaskService() {
 
         val automaticallyUpdateNotificationMetadata = playerOptions?.getBoolean(AUTO_UPDATE_METADATA, true) ?: true
 
-        player = QueuedAudioPlayer(this@MusicService, bufferOptions, cacheOptions)
+        player = QueuedAudioPlayer(this@MusicService, playerConfig, bufferOptions, cacheOptions)
         player.automaticallyUpdateNotificationMetadata = automaticallyUpdateNotificationMetadata
         observeEvents()
     }
@@ -381,7 +383,7 @@ class MusicService : HeadlessJsTaskService() {
         }
 
         scope.launch {
-            event.onMediaSessionCallbackTriggered.collect {
+            event.onPlayerActionTriggeredExternally.collect {
                 when (it) {
                     is MediaSessionCallback.RATING -> {
                         Bundle().apply {
@@ -391,7 +393,7 @@ class MusicService : HeadlessJsTaskService() {
                     }
                     is MediaSessionCallback.SEEK -> {
                         Bundle().apply {
-                            putDouble("position", it.position.toDouble())
+                            putDouble("position", it.positionMs.toDouble())
                             emit(MusicEvents.BUTTON_SEEK_TO, this)
                         }
                     }

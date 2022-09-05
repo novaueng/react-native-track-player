@@ -51,34 +51,10 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.github.DoubleSymmetry:KotlinAudio:v1.2.1'
+
     //noinspection GradleDynamicVersion
-    implementation 'com.facebook.react:react-native:+'
-    
-    def exoPlayerVersion = safeExtGet("exoPlayerVersion", '2.12.3')
-
-    // ExoPlayer Core
-    implementation "com.google.android.exoplayer:exoplayer-core:2.12.3"
-
-    // ExoPlayer DASH
-    if (dash) {
-        implementation "com.google.android.exoplayer:exoplayer-dash:2.12.3"
-    } else {
-        compileOnly "com.google.android.exoplayer:exoplayer-dash:2.12.3"
-    }
-
-    // ExoPlayer HLS
-    if (hls) {
-        implementation "com.google.android.exoplayer:exoplayer-hls:2.12.3"
-    } else {
-        compileOnly "com.google.android.exoplayer:exoplayer-hls:2.12.3"
-    }
-
-    // ExoPlayer SmoothStreaming
-    if (smoothstreaming) {
-        implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:2.12.3"
-    } else {
-        compileOnly "com.google.android.exoplayer:exoplayer-smoothstreaming:2.12.3"
-    }
+    implementation "com.facebook.react:react-native:+"
 
     // Make sure we're using androidx
     implementation "androidx.core:core-ktx:1.8.0"
